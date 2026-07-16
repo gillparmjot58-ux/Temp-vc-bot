@@ -1,1 +1,13 @@
 
+{
+  "name": "temp-vc-bot",
+  "version": "1.0.0",
+  "description": "Temporary Voice Channel Bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.21.0"
+  }
+}
