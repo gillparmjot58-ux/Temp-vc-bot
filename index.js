@@ -8,6 +8,7 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
   ],
 });
+
 const CREATE_CHANNEL_ID = "1354771746221461617";
 
 client.once("ready", () => {
@@ -15,23 +16,30 @@ client.once("ready", () => {
 });
 
 client.on("voiceStateUpdate", async (oldState, newState) => {
-  if (newState.channelId === CREATE_CHANNEL_ID) {
-    const member = newState.member;
-    const channel = await newState.guild.channels.create({
-      name: `${member.displayName}'s VC`,
-      type: ChannelType.GuildVoice,
-      parent: newState.channel.parentId,
-    });
+  try {
+    // Create Temp VC
+    if (newState.channelId === CREATE_CHANNEL_ID) {
+      const member = newState.member;
 
-    await newState.setChannel(channel);
-  }
+      const channel = await newState.guild.channels.create({
+        name: `${member.displayName}'s VC`,
+        type: ChannelType.GuildVoice,
+        parent: newState.channel.parentId,
+      });
 
-  if (
-    oldState.channel &&
-    oldState.channel.members.size === 0 &&
-    oldState.channel.name.endsWith("'s VC")
-  ) {
-    await oldState.channel.delete().catch(() => {});
+      await newState.setChannel(channel);
+    }
+
+    // Delete empty Temp VC
+    if (
+      oldState.channel &&
+      oldState.channel.members.size === 0 &&
+      oldState.channel.name.endsWith("'s VC")
+    ) {
+      await oldState.channel.delete().catch(() => {});
+    }
+  } catch (err) {
+    console.error(err);
   }
 });
 
