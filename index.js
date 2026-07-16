@@ -1,9 +1,13 @@
 const { Client, GatewayIntentBits, ChannelType } = require("discord.js");
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildVoiceStates,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ],
 });
-
 const CREATE_CHANNEL_ID = "1354771746221461617";
 
 client.once("ready", () => {
